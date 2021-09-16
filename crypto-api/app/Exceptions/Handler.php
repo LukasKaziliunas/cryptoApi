@@ -3,7 +3,13 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,8 +40,35 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function(TokenInvalidException $e, $request){
+            return response()->json(['message'=>'Invalid token'],401);
         });
+
+        $this->renderable(function (TokenExpiredException $e, $request) {
+            return response()->json(['message'=>'Token has Expired'],401);
+        });
+
+        $this->renderable(function (JWTException $e, $request) {
+            return response()->json(['message'=>'Token not parsed'],401);
+        });
+        
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if( $request->is('api/*') ){
+                return response()->json(['message' => 'Object not found'], 404); 
+            }
+        });
+
+        $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
+            if( $request->is('api/*') ){
+                return response()->json(['message' => 'Method not allowed'], 405); 
+            }
+        });
+
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+            if( $request->is('api/*') ){
+                return response()->json(['message' => 'This action is unauthorized'], 403); 
+            }
+        });
+
     }
 }
