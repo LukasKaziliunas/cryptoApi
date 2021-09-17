@@ -35,7 +35,7 @@ class AssetController extends Controller
 
     public function update(AssetRequest $request, Asset $asset)
     {
-        $asset = Asset::create( $request->validated() );
+        $asset->update( $request->validated() );
 
         return response()->json([
             'message' => 'asset updated.',

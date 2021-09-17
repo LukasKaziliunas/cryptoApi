@@ -48,4 +48,4 @@ Route::middleware(['auth.jwt'])->group(function () {
 Route::post('/assets', [AssetController::class, 'store']);
 Route::get('/assets', [AssetController::class, 'index']);
 Route::delete('/assets/{asset}', [AssetController::class, 'destroy']);
-
+Route::put('/assets/{asset}', [AssetController::class, 'update']);

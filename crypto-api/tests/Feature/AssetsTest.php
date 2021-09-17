@@ -77,7 +77,22 @@ class AssetsTest extends TestCase
 
     public function test_update_user_asset()
     {
-        $this->assertTrue(false);
+        $user = new User();
+        $user->id = 1;
+        $user->name = 'joe';
+        $user->lastname = 'smith';
+        $user->email = "joe@example.com";
+        $user->password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+        $user->save();
+
+        $a = Asset::factory()->create(['user_id' => $user->id, 'label' => 'test', 'crypto' => 'BTC', 'amount' => 12.3]);
+        
+        $this->actingAs($user)->put('/api/assets/' . $a->id, ['label' => 'updated', 'crypto' => 'BTC', 'amount' => 12.3]);
+
+        $updated = Asset::where('id', $a->id)->first();
+
+        $this->assertTrue($updated->label == 'updated');
+
     }
 
     public function test_user_asset_deleted()
