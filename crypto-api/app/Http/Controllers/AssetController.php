@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AssetRequest;
+use App\Interfaces\CryptoApi;
 use App\Models\Asset;
 use Illuminate\Http\Request;
 
@@ -50,5 +51,10 @@ class AssetController extends Controller
         return response()->json([
             'message' => 'asset deleted.',
         ], 200);
+    }
+
+    public function test(CryptoApi $cryptoApi)
+    {
+        return $cryptoApi->getRates();
     }
 }
