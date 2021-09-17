@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\UserController;
+use App\Models\Asset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,5 +39,13 @@ Route::middleware(['auth.jwt'])->group(function () {
         UserController::class, 'logout'
     ]);
 
+    Route::get('/test' , function(){
+        return Asset::where('user_id' ,auth()->user()->id)->get();
+    });
 
 });
+
+Route::post('/assets', [AssetController::class, 'store']);
+Route::get('/assets', [AssetController::class, 'index']);
+Route::delete('/assets/{asset}', [AssetController::class, 'destroy']);
+

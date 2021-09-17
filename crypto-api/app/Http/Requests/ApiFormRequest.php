@@ -23,11 +23,13 @@ abstract class ApiFormRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        response()->json([  "errors" => $validator->errors(),
-                            "fields" => request()->all() ],
-            422 )
-            ->send();
-        exit;
+        throw new HttpResponseException(
+            response()->json([  "errors" => $validator->errors(),
+                                "fields" => request()->all() ],
+                                422 )
+        );
+
+        parent::failedValidation($validator);
     }
     abstract public function rules();
 }
