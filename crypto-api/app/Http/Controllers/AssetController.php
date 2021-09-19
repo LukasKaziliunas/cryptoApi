@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AssetRequest;
+use App\Http\Requests\AssetDeleteRequest;
+use App\Http\Requests\AssetUpdateRequest;
 use App\Interfaces\CryptoApi;
 use App\Models\Asset;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
@@ -34,7 +37,7 @@ class AssetController extends Controller
         ], 201);
     }
 
-    public function update(AssetRequest $request, Asset $asset)
+    public function update(AssetUpdateRequest $request, Asset $asset)
     {
         $asset->update( $request->validated() );
 
@@ -44,7 +47,7 @@ class AssetController extends Controller
         ], 200);
     }
 
-    public function destroy(Asset $asset)
+    public function destroy(AssetDeleteRequest $request, Asset $asset)
     {
         $asset->delete();
 
