@@ -5,18 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AssetRequest;
 use App\Http\Requests\AssetDeleteRequest;
 use App\Http\Requests\AssetUpdateRequest;
+use App\Http\Resources\AssetCollection;
 use App\Interfaces\CryptoApi;
 use App\Models\Asset;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {
     public function index()
     {
-        //apskaiciuoti total
-
-        return Asset::where('user_id', auth()->id())->get();
+        return new AssetCollection( Asset::where('user_id', auth()->id())->get() );
     }
 
     public function show(Asset $asset)
@@ -58,6 +55,7 @@ class AssetController extends Controller
 
     public function test(CryptoApi $cryptoApi)
     {
-        return $cryptoApi->getRates();
+        $rates = $cryptoApi->getRates();
+        return $rates['BTC'];
     }
 }

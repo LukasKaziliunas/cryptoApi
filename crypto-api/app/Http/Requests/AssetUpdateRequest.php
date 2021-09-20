@@ -31,7 +31,7 @@ class AssetUpdateRequest extends ApiFormRequest
         return [
             'label' => 'required|max:255',
             'crypto' => 'required',
-            'amount' => 'required',
+            'amount' => 'required|numeric|min:0',
         ];
     }
 }
