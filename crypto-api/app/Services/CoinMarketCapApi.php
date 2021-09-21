@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use \App\Interfaces\CryptoApi;
+use ErrorException;
 use Illuminate\Support\Facades\Http;
 
 class CoinMarketCapApi implements CryptoApi
@@ -20,7 +21,9 @@ class CoinMarketCapApi implements CryptoApi
     public function getRates()
     {
         $response = $this->makeApiCall();
-        return $this->parseResponseToPricesArray($response);
+        $parsed = $this->parseResponseToPricesArray($response);
+       
+        return $parsed;
     }
 
     public function makeApiCall()
@@ -30,7 +33,7 @@ class CoinMarketCapApi implements CryptoApi
         $cacheDuration = floor($minutesInDay / $this->limit);
         
         $response = cache()->remember('coinmarketcap', now()->addMinutes($cacheDuration), function() use($cryptosListString){
-            return json_decode( $this->sendRequest($this->key, $cryptosListString) );
+            return $this->sendRequest($this->key, $cryptosListString);
         });
        
         return $response;
@@ -52,9 +55,13 @@ class CoinMarketCapApi implements CryptoApi
 
     private function sendRequest($key, $cryptosListString)
     {
-        return Http::acceptJson()->withHeaders([
+        $response = Http::acceptJson()->withHeaders([
             'X-CMC_PRO_API_KEY' => $key,
         ])->get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol='. $cryptosListString .'&convert=usd');
+
+        $response->throw(); //jei atsirastu klaida išmes exception
+
+        return json_decode( $response );
     }
 
 }

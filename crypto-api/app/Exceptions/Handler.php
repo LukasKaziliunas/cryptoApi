@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
+use ErrorException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -69,6 +71,16 @@ class Handler extends ExceptionHandler
                 return response()->json(['message' => 'This action is unauthorized'], 403); 
             }
         });
+
+        $this->renderable(function (ErrorException $e, $request) {
+            Log::debug($e->getMessage());
+            return response()->json(['message' => 'Internal error'], 500);
+        });
+
+        $this->renderable(function (RequestException $e, $request) {
+            Log::channel('myErrors')->error($e->getMessage());
+            return response()->json(['message' => 'Bad request to external api.'], 400);   
+    });
 
     }
 }

@@ -26,7 +26,7 @@ class AssetFactory extends Factory
         return [
             'label' => $this->faker->word(),
             'amount' => 0.05,
-            'crypto' =>  Str::random(3),
+            'crypto' =>  'BTC',
             'user_id' => 1
         ];
     }

@@ -29,7 +29,7 @@ class CoinlayerApi implements CryptoApi
         $cacheDuration = floor($minutesInDay / $this->limit);
 
         $response = cache()->remember('coinlayer', now()->addMinutes($cacheDuration), function() use($cryptosListString){
-            return json_decode( $this->sendRequest( $this->key, $cryptosListString ) );
+            return $this->sendRequest( $this->key, $cryptosListString );
         });
         return $response;
     }
@@ -41,8 +41,12 @@ class CoinlayerApi implements CryptoApi
 
     private function sendRequest($key, $cryptosListString)
     {
-        return Http::acceptJson()
+        $response = Http::acceptJson()
                 ->get("http://api.coinlayer.com/api/live?access_key={$key}&symbols={$cryptosListString}");
+
+        $response->throw(); //jei atsirastu klaida išmes exception
+
+        return json_decode( $response );
     }
 
 }
