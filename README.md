@@ -3,6 +3,7 @@
 * [User](#User)
 * [Authentication](#Authentication)
 * [Assets](#Assets)
+* [Cryptos](#Cryptos)
 * [Errors](#Errors)
 
 ## Important
@@ -58,10 +59,10 @@ create a user account
         },
         "fields": {
             "name": <value>,
+            "lastname": <value>,
             "email": <value>,
             "password": <value>,
-            "password2": <value>,
-            "lastname": <value>
+            "password2": <value>,  
         }
     }
     ```
@@ -373,9 +374,9 @@ show a particular asset.
             ]
         },
         "fields": {
-            "name": <value>,
-            "lastname": <value>,
-            "position_id": <value>,
+            "label": <value>,
+            "amount": <value>,
+            "crypto": <value>,
         }
     }
     ```
@@ -439,9 +440,9 @@ show a particular asset.
             ]
         },
         "fields": {
-            "name": <value>,
-            "lastname": <value>,
-            "position_id": <value>,
+           "label": <value>,
+            "amount": <value>,
+            "crypto": <value>,
         }
     }
     ```
@@ -481,6 +482,28 @@ show a particular asset.
     ```
     { "message": "Object not found" }
     ```
+
+**[⬆ Back to top](#Api-documentation)**
+
+## Cryptos
+
+### Allowed cryptos
+
+* Url
+
+`GET` localhost/api/cryptos
+
+* Success response
+  * **Code:** 200 <br />
+    **Content:** 
+    
+  ```
+    [
+      "BTC",
+      "ETH",
+      "DOGE"
+    ]
+  ```
 
 **[⬆ Back to top](#Api-documentation)**
 

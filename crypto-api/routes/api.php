@@ -45,8 +45,6 @@ Route::middleware(['auth.jwt'])->group(function () {
     // Route::delete('/assets/{asset}', [AssetController::class, 'destroy']);
     // Route::put('/assets/{asset}', [AssetController::class, 'update']);
 
-    // Route::get('/cryptos', [AssetController::class, 'availableCryptos']);
-
 });
 
 
@@ -59,10 +57,9 @@ Route::middleware(['dummyUser'])->group(function () {
     Route::get('/assets/{asset}', [AssetController::class, 'show']);
     Route::delete('/assets/{asset}', [AssetController::class, 'destroy']);
     Route::put('/assets/{asset}', [AssetController::class, 'update']);
-
-    Route::get('/cryptos', [AssetController::class, 'availableCryptos']);
-
 });
+
+Route::get('/cryptos', [AssetController::class, 'availableCryptos']);
 
     
 
