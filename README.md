@@ -398,7 +398,7 @@ show a particular asset.
 
 | Parameter | Type      | Description |
 | --------- | --------- | ----------- |
-| label        | string | lanel of the asset, max length is 255 |
+| label        | string | label of the asset, max length is 255 |
 | amount        | double | the amount of crypto currency, min value is 0 |
 | crypto        | string | symbol of the crypto currency, allowed values: BTC, ETH, DOGE |
 

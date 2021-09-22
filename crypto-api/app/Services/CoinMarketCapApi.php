@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use \App\Interfaces\CryptoApi;
-use ErrorException;
 use Illuminate\Support\Facades\Http;
 
 class CoinMarketCapApi implements CryptoApi

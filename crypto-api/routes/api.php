@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\UserController;
-use App\Models\Asset;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*

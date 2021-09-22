@@ -9,7 +9,6 @@ use App\Http\Resources\AssetCollection;
 use App\Http\Resources\AssetResource;
 use App\Interfaces\CryptoApi;
 use App\Models\Asset;
-use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
