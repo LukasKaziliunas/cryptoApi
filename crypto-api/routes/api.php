@@ -39,9 +39,20 @@ Route::middleware(['auth.jwt'])->group(function () {
         UserController::class, 'logout'
     ]);
 
-    Route::get('/test' , function(){
-        return Asset::where('user_id' ,auth()->user()->id)->get();
-    });
+    // Route::post('/assets', [AssetController::class, 'store']);
+    // Route::get('/assets', [AssetController::class, 'index']);
+    // Route::get('/assets/{asset}', [AssetController::class, 'show']);
+    // Route::delete('/assets/{asset}', [AssetController::class, 'destroy']);
+    // Route::put('/assets/{asset}', [AssetController::class, 'update']);
+
+    // Route::get('/cryptos', [AssetController::class, 'availableCryptos']);
+
+});
+
+
+//testavimui del paprastumo visada bus prisijungta kaip naudotjas id = 1 (reikia seedint db kad atsirastu) 
+//jei reikalinga kad butu galima prisijungti patiems, sita koda istrinti ir atkomentuoti routus esancius virsuje
+Route::middleware(['dummyUser'])->group(function () {
 
     Route::post('/assets', [AssetController::class, 'store']);
     Route::get('/assets', [AssetController::class, 'index']);
@@ -53,6 +64,5 @@ Route::middleware(['auth.jwt'])->group(function () {
 
 });
 
-Route::get('/test', [AssetController::class, 'test']);
-
+    
 

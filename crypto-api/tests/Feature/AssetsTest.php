@@ -31,7 +31,7 @@ class AssetsTest extends TestCase
             ]);
     }
 
-    public function test_user_posts_asset_without_filling_fields()
+    public function test_user_cant_post_asset_without_filling_fields()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
@@ -47,7 +47,7 @@ class AssetsTest extends TestCase
             });
     }
 
-    public function test_show_user_assets()
+    public function test__user_gets_their_assets()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
@@ -66,7 +66,7 @@ class AssetsTest extends TestCase
             );
     }
 
-    public function test_update_user_asset()
+    public function test_user_updates_asset()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
@@ -83,7 +83,7 @@ class AssetsTest extends TestCase
 
     }
 
-    public function test_user_asset_deleted()
+    public function test_user_deletes_asset()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
@@ -97,7 +97,7 @@ class AssetsTest extends TestCase
         $this->assertDatabaseCount('assets', 0);
     }
 
-    public function test_user_deleting_someone_else_asset()
+    public function test_user_cant_delete_someone_else_asset()
     {
        
         $u1 = User::factory()->create();
@@ -118,7 +118,7 @@ class AssetsTest extends TestCase
             ]);
     }
 
-    public function test_update_other_user_asset()
+    public function test_user_cant_update_someone_else_asset()
     {
         $u1 = User::factory()->create();
         $u2 = User::factory()->create();

@@ -9,6 +9,7 @@ use App\Http\Resources\AssetCollection;
 use App\Http\Resources\AssetResource;
 use App\Interfaces\CryptoApi;
 use App\Models\Asset;
+use Illuminate\Support\Facades\Auth;
 
 class AssetController extends Controller
 {
@@ -57,11 +58,5 @@ class AssetController extends Controller
     public function availableCryptos()
     {
         return CryptoApi::CRYPTOS;
-    }
-
-    public function test(CryptoApi $cryptoApi)
-    {
-        // $cmcApi = new CoinMarketCapApi();
-        // dd( $cmcApi->getRates()  );
     }
 }

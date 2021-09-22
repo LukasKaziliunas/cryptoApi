@@ -10,7 +10,7 @@ use App\Services\CoinMarketCapApi;
 class ApiTests extends TestCase
 {
 
-    public function test_coinmarketcap_api_correct_result()
+    public function test_coinmarketcap_api_gives_correct_result()
     {
         $cmcApi = new CoinMarketCapApi();
 
@@ -21,7 +21,7 @@ class ApiTests extends TestCase
         $this->assertTrue($this->allRequiredCryptosInArray($requiredCryptos, $rates));
     }
 
-    public function test_coinlayer_api_correct_result()
+    public function test_coinlayer_api_gives_correct_result()
     {
         $cmcApi = new CoinlayerApi();
 
