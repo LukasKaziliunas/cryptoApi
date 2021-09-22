@@ -49,7 +49,7 @@ return [
 
         'myErrors' => [
             'driver' => 'single',
-            'path' => storage_path('logs/exeptionsErrors.log'),
+            'path' => storage_path('logs/exceptionsErrors.log'),
             'level' => 'info',
         ],
 

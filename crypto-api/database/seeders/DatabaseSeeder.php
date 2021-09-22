@@ -13,8 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $u1 = \App\Models\User::factory()->create(['name' => 'Bob', 'email' => 'bob@example.com']);
-        $u2 = \App\Models\User::factory()->create(['name' => 'Alice', 'email' => 'alice@example.com']);
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory()->create(['name' => 'Bob', 'email' => 'bob@example.com']);
+        \App\Models\User::factory()->create(['name' => 'Alice', 'email' => 'alice@example.com']);
+        
+        \App\Models\Asset::factory(3)->create();
     }
 }
