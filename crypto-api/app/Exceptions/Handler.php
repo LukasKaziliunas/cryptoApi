@@ -79,7 +79,7 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (RequestException $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
-            return response()->json(['message' => 'Bad request to external api.'], 400);   
+            return response()->json(['message' => 'Bad request to external api.'], 500);   
     });
 
     }
