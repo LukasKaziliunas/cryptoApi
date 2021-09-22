@@ -21,9 +21,7 @@ class CoinMarketCapApi implements CryptoApi
     public function getRates()
     {
         $response = $this->makeApiCall();
-        $parsed = $this->parseResponseToPricesArray($response);
-       
-        return $parsed;
+        return $this->parseResponseToPricesArray($response);
     }
 
     public function makeApiCall()
@@ -61,7 +59,7 @@ class CoinMarketCapApi implements CryptoApi
 
         $response->throw(); //jei atsirastu klaida išmes exception
 
-        return json_decode( $response );
+        return json_decode( $response ); // konvertuoja json response i stdClass objekta
     }
 
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\AssetRequest;
 use App\Http\Requests\AssetDeleteRequest;
 use App\Http\Requests\AssetUpdateRequest;
 use App\Http\Resources\AssetCollection;
+use App\Http\Resources\AssetResource;
 use App\Interfaces\CryptoApi;
 use App\Models\Asset;
 
@@ -18,7 +19,7 @@ class AssetController extends Controller
 
     public function show(Asset $asset)
     {
-        return $asset;
+        return new AssetResource( $asset );
     }
 
     public function store(AssetRequest $request)
@@ -53,9 +54,14 @@ class AssetController extends Controller
         ], 200);
     }
 
+    public function availableCryptos()
+    {
+        return CryptoApi::CRYPTOS;
+    }
+
     public function test(CryptoApi $cryptoApi)
     {
-        $rates = $cryptoApi->getRates();
-        return $rates['BTC'];
+        // $cmcApi = new CoinMarketCapApi();
+        // dd( $cmcApi->getRates()  );
     }
 }

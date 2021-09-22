@@ -43,11 +43,16 @@ Route::middleware(['auth.jwt'])->group(function () {
         return Asset::where('user_id' ,auth()->user()->id)->get();
     });
 
+    Route::post('/assets', [AssetController::class, 'store']);
+    Route::get('/assets', [AssetController::class, 'index']);
+    Route::get('/assets/{asset}', [AssetController::class, 'show']);
+    Route::delete('/assets/{asset}', [AssetController::class, 'destroy']);
+    Route::put('/assets/{asset}', [AssetController::class, 'update']);
+
+    Route::get('/cryptos', [AssetController::class, 'availableCryptos']);
+
 });
 
 Route::get('/test', [AssetController::class, 'test']);
 
-Route::post('/assets', [AssetController::class, 'store']);
-Route::get('/assets', [AssetController::class, 'index']);
-Route::delete('/assets/{asset}', [AssetController::class, 'destroy']);
-Route::put('/assets/{asset}', [AssetController::class, 'update']);
+

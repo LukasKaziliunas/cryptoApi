@@ -36,7 +36,7 @@ class CoinlayerApi implements CryptoApi
 
     public function parseResponseToPricesArray($jsonResponse)
     {
-        return $jsonResponse->rates;
+        return $jsonResponse['rates'];
     }
 
     private function sendRequest($key, $cryptosListString)
@@ -46,7 +46,7 @@ class CoinlayerApi implements CryptoApi
 
         $response->throw(); //jei atsirastu klaida išmes exception
 
-        return json_decode( $response );
+        return json_decode( $response, true ); //konvertuoja json string i rakto-reiksmes masyva
     }
 
 }

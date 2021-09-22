@@ -16,7 +16,7 @@ class AssetCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        $total = AssetsService::calculateTotal( auth()->user()->id );
+        $total = AssetsService::getPortfolioTotal( auth()->user()->id );
 
         return [
             'total' => $total,

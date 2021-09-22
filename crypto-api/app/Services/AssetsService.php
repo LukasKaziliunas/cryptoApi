@@ -3,16 +3,20 @@
 namespace App\Services;
 
 use App\Interfaces\CryptoApi;
-use Illuminate\Support\Facades\DB;
+use App\Models\Asset;
 
 class AssetsService
 {
 
-    public static function calculateTotal($userId)
+    public static function getPortfolioTotal($userId)
     {
         $rates = app()->make(CryptoApi::class)->getRates();
-        $cryptoAmounts = DB::table('assets')->select('crypto', 'amount')->where( 'user_id', $userId )->get();
+        $cryptoAmounts = Asset::getUserCryptoAmounts($userId);
+        return self::calculateAssetsTotal($rates, $cryptoAmounts);
+    }
 
+    public static function calculateAssetsTotal($rates, $cryptoAmounts)
+    {
         $total = 0;
 
         foreach($cryptoAmounts as $cryptoAmount)
@@ -24,7 +28,7 @@ class AssetsService
         return $total;
     }
 
-    public static function calculatePrice($crypto, $amount)
+    public static function calculateAssetPrice($crypto, $amount)
     {
         $cryptoApi = app()->make(CryptoApi::class);
         $rates = $cryptoApi->getRates();
