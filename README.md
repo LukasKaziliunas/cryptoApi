@@ -555,7 +555,7 @@ Returned when a current user is not authorized to perform an action <br />
     ```
 
 * **Code:** 500 INTERNAL SERVER ERROR <br />
-Returned when an unecpected internal error occurs <br />
+Returned when an unexpected internal error occurs <br />
         **Content:** 
     ```
     {

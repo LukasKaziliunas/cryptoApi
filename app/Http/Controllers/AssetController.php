@@ -9,6 +9,7 @@ use App\Http\Resources\AssetCollection;
 use App\Http\Resources\AssetResource;
 use App\Interfaces\CryptoApi;
 use App\Models\Asset;
+use App\Services\AssetsService;
 
 class AssetController extends Controller
 {
