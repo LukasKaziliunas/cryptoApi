@@ -10,7 +10,7 @@ class Asset extends Model
 {
     use HasFactory;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
@@ -19,10 +19,10 @@ class Asset extends Model
         'label',
         'crypto',
         'amount',
-        'user_id'
+        'user_id',
     ];
 
-     /**
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array
@@ -49,6 +49,6 @@ class Asset extends Model
      */
     public static function getUserCryptoAmounts($userId)
     {
-        return DB::table('assets')->select('crypto', 'amount')->where( 'user_id', $userId )->get();
+        return DB::table('assets')->select('crypto', 'amount')->where('user_id', $userId)->get();
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Providers;
 
 use App\Interfaces\CryptoApi;
-use App\Services\CoinlayerApi;
-use App\Services\CoinMarketCapApi;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

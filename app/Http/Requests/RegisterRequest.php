@@ -22,11 +22,11 @@ class RegisterRequest extends ApiFormRequest
     public function rules()
     {
         return [
-            'name'=>'required|alpha|max:255',
-            'lastname'=>'required|alpha|max:255',
-            'email'=>'required|email|unique:users|max:255',
-            'password'=>'required|min:8|max:255',
-            'password2'=>'required|same:password|max:255'
+            'name' => 'required|alpha|max:255',
+            'lastname' => 'required|alpha|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|min:8|max:255',
+            'password2' => 'required|same:password|max:255',
         ];
     }
 }

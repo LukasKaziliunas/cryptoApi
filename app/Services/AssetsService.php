@@ -8,7 +8,7 @@ use App\Models\Asset;
 class AssetsService
 {
 
-      /**
+    /**
      * get total value of users portfolio.
      *
      * @param  int $userId
@@ -31,16 +31,15 @@ class AssetsService
     {
         $total = 0;
 
-        foreach($cryptoAmounts as $cryptoAmount)
-        {
+        foreach ($cryptoAmounts as $cryptoAmount) {
             $crypto = $cryptoAmount->crypto;
-            $total += $cryptoAmount->amount * $rates[ $crypto ];
+            $total += $cryptoAmount->amount * $rates[$crypto];
         }
 
         return $total;
     }
 
-     /**
+    /**
      * Returns the price for the crypto amount.
      *
      * @param  string $crypto
@@ -54,4 +53,5 @@ class AssetsService
 
         return $rates[$crypto] * $amount;
     }
+
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AssetRequest;
 use App\Http\Requests\AssetDeleteRequest;
+use App\Http\Requests\AssetRequest;
 use App\Http\Requests\AssetUpdateRequest;
 use App\Http\Resources\AssetCollection;
 use App\Http\Resources\AssetResource;
@@ -19,7 +19,7 @@ class AssetController extends Controller
      */
     public function index()
     {
-        return new AssetCollection( Asset::where('user_id', auth()->id())->get() );
+        return new AssetCollection(Asset::where('user_id', auth()->id())->get());
     }
 
     /**
@@ -30,7 +30,7 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
-        return new AssetResource( $asset );
+        return new AssetResource($asset);
     }
 
     /**
@@ -44,11 +44,11 @@ class AssetController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = auth()->id();
 
-        $asset = Asset::create( $validated );
+        $asset = Asset::create($validated);
 
         return response()->json([
             'message' => 'asset was created.',
-            'id' => $asset->id
+            'id' => $asset->id,
         ], 201);
     }
 
@@ -60,11 +60,11 @@ class AssetController extends Controller
      */
     public function update(AssetUpdateRequest $request, Asset $asset)
     {
-        $asset->update( $request->validated() );
+        $asset->update($request->validated());
 
         return response()->json([
             'message' => 'asset was updated.',
-            'id' => $asset->id
+            'id' => $asset->id,
         ], 200);
     }
 
@@ -83,7 +83,7 @@ class AssetController extends Controller
         ], 200);
     }
 
-     /**
+    /**
      * give a listing of available cryptos.
      *
      * @return \Illuminate\Http\Response

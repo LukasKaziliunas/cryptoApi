@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Asset;
-
 class AssetDeleteRequest extends ApiFormRequest
 {
     /**
@@ -15,9 +13,10 @@ class AssetDeleteRequest extends ApiFormRequest
     {
         $asset = request()->route('asset');
         $userId = auth()->user()->id;
-        if($asset->user_id == $userId)
+        if ($asset->user_id == $userId) {
             return true;
-        
+        }
+
         return false;
     }
 

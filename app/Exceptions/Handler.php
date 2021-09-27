@@ -3,8 +3,9 @@
 namespace App\Exceptions;
 
 use ErrorException;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -12,7 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use Illuminate\Http\Client\ConnectionException;
 
 class Handler extends ExceptionHandler
 {
@@ -43,33 +43,33 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function(TokenInvalidException $e, $request){
-            return response()->json(['message'=>'Invalid token'],401);
+        $this->renderable(function (TokenInvalidException $e, $request) {
+            return response()->json(['message' => 'Invalid token'], 401);
         });
 
         $this->renderable(function (TokenExpiredException $e, $request) {
-            return response()->json(['message'=>'Token has Expired'],401);
+            return response()->json(['message' => 'Token has Expired'], 401);
         });
 
         $this->renderable(function (JWTException $e, $request) {
-            return response()->json(['message'=>'Token not parsed'],401);
+            return response()->json(['message' => 'Token not parsed'], 401);
         });
-        
+
         $this->renderable(function (NotFoundHttpException $e, $request) {
-            if( $request->is('api/*') ){
-                return response()->json(['message' => 'Object not found'], 404); 
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Object not found'], 404);
             }
         });
 
         $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
-            if( $request->is('api/*') ){
-                return response()->json(['message' => 'Method not allowed'], 405); 
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Method not allowed'], 405);
             }
         });
 
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
-            if( $request->is('api/*') ){
-                return response()->json(['message' => 'This action is unauthorized'], 403); 
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'This action is unauthorized'], 403);
             }
         });
 
@@ -80,12 +80,12 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (RequestException $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
-            return response()->json(['message' => 'Bad request to external api'], 500);    
+            return response()->json(['message' => 'Bad request to external api'], 500);
         });
 
         $this->renderable(function (ConnectionException $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
-            return response()->json(['message' => 'Could not connect to external api'], 500);    
+            return response()->json(['message' => 'Could not connect to external api'], 500);
         });
     }
 }

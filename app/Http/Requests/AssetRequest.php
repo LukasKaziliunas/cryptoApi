@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use App\Interfaces\CryptoApi;
+use Illuminate\Validation\Rule;
 
 class AssetRequest extends ApiFormRequest
 {

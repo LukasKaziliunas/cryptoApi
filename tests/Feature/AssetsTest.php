@@ -12,8 +12,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AssetsTest extends TestCase
 {
     use RefreshDatabase;
-    
-    public function test_user_creates_asset()
+
+    public function testUserCreatesAsset()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
@@ -22,8 +22,8 @@ class AssetsTest extends TestCase
 
         $response = $this->actingAs($user)->withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/assets', ['label' => 'testAsset', 'crypto' => 'BTC' , 'amount' => 0.5]);
-        
+        ])->postJson('/api/assets', ['label' => 'testAsset', 'crypto' => 'BTC', 'amount' => 0.5]);
+
         $response
             ->assertStatus(201)
             ->assertJson([
@@ -31,23 +31,23 @@ class AssetsTest extends TestCase
             ]);
     }
 
-    public function test_user_cant_post_asset_without_filling_fields()
+    public function testUserCantPostAssetWithoutFillingFields()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
 
         $response = $this->actingAs($user)->withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/assets', ['label' => '', 'crypto' => '' , 'amount' => '']);
-        
+        ])->postJson('/api/assets', ['label' => '', 'crypto' => '', 'amount' => '']);
+
         $response
             ->assertStatus(422)
-            ->assertJson(function(AssertableJson $json){
+            ->assertJson(function (AssertableJson $json) {
                 $json->has('errors')->has('fields')->etc();
             });
     }
 
-    public function test__user_gets_their_assets()
+    public function testUserGetsTheirAssets()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
@@ -60,19 +60,19 @@ class AssetsTest extends TestCase
 
         $response
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) =>
+            ->assertJson(fn(AssertableJson $json) =>
                 $json->has('total')
                     ->has('data', 3)
             );
     }
 
-    public function test_user_updates_asset()
+    public function testUserUpdatesAsset()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
 
         $a = Asset::factory()->create(['user_id' => $user->id, 'label' => 'test', 'crypto' => 'BTC', 'amount' => 12.3]);
-        
+
         $this->actingAs($user)->withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->put('/api/assets/' . $a->id, ['label' => 'updated', 'crypto' => 'BTC', 'amount' => 12.3]);
@@ -83,7 +83,7 @@ class AssetsTest extends TestCase
 
     }
 
-    public function test_user_deletes_asset()
+    public function testUserDeletesAsset()
     {
         $user = User::factory()->create();
         $token = JWTAuth::fromUser($user);
@@ -97,28 +97,28 @@ class AssetsTest extends TestCase
         $this->assertDatabaseCount('assets', 0);
     }
 
-    public function test_user_cant_delete_someone_else_asset()
+    public function testUserCantDeleteSomeoneElseAsset()
     {
-       
+
         $u1 = User::factory()->create();
         $u2 = User::factory()->create();
 
         $token = JWTAuth::fromUser($u2);
-  
-         $a = Asset::factory()->create(['user_id' => $u1->id]);
 
-         $response = $this->actingAs($u2)->withHeaders([
+        $a = Asset::factory()->create(['user_id' => $u1->id]);
+
+        $response = $this->actingAs($u2)->withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->delete('/api/assets/' . $a->id);
 
-         $response
+        $response
             ->assertStatus(403)
             ->assertJson([
                 'message' => 'This action is unauthorized',
             ]);
     }
 
-    public function test_user_cant_update_someone_else_asset()
+    public function testUserCantUpdateSomeoneElseAsset()
     {
         $u1 = User::factory()->create();
         $u2 = User::factory()->create();
@@ -126,7 +126,7 @@ class AssetsTest extends TestCase
         $token = JWTAuth::fromUser($u2);
 
         $a = Asset::factory()->create(['user_id' => $u1->id, 'label' => 'test', 'crypto' => 'BTC', 'amount' => 12.3]);
-        
+
         $response = $this->actingAs($u2)->withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->put('/api/assets/' . $a->id, ['label' => 'updated', 'crypto' => 'BTC', 'amount' => 12.3]);

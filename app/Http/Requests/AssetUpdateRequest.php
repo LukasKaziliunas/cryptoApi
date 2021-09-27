@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use App\Interfaces\CryptoApi;
+use Illuminate\Validation\Rule;
 
 class AssetUpdateRequest extends ApiFormRequest
 {
@@ -16,9 +16,10 @@ class AssetUpdateRequest extends ApiFormRequest
     {
         $asset = request()->route('asset');
         $userId = auth()->user()->id;
-        if($asset->user_id == $userId)
+        if ($asset->user_id == $userId) {
             return true;
-        
+        }
+
         return false;
     }
 

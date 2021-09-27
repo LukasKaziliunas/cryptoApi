@@ -12,5 +12,3 @@ interface CryptoApi
 
     public function parseResponseToPricesArray($jsonResponse);
 }
-
-?>

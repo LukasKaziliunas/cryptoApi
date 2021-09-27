@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
-     /**
+    /**
      * create a user account.
      *
      * @param  RegisterRequest $request
@@ -19,20 +19,20 @@ class UserController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = new User([
-            'name'=> $request->input('name'),
-            'lastname'=> $request->input('lastname'),
-            'email'=> $request->input('email'),
-            'password'=> bcrypt($request->input('password'))
+            'name' => $request->input('name'),
+            'lastname' => $request->input('lastname'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
         ]);
 
         $user->save();
 
         return response()->json([
-            'message'=>'Successfully Created user'
-        ],201);
+            'message' => 'Successfully Created user',
+        ], 201);
     }
 
-     /**
+    /**
      * log the user in and give auth token.
      *
      * @param  LoginRequest $request
@@ -44,41 +44,43 @@ class UserController extends Controller
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
-                    'error' => 'Invalid Credentials'
+                    'error' => 'Invalid Credentials',
                 ], 401);
             }
         } catch (JWTException $e) {
             return response()->json([
-                'error' => 'Could not create token'
+                'error' => 'Could not create token',
             ], 500);
         }
         return response()->json([
-            'token' => $token
+            'token' => $token,
         ], 200);
     }
 
-     /**
+    /**
      * get user's profile.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getUser(){
+    public function getUser()
+    {
         $user = auth('api')->user();
-        return response()->json(['user'=>$user], 200);
+        return response()->json(['user' => $user], 200);
     }
 
-     /**
+    /**
      * invalidate user's token.
      *
      * @return \Illuminate\Http\Response
      */
-    public function logout(){
+    public function logout()
+    {
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-     /**
+    /**
      * gives a new token and makes the old one invalid.
      *
      * @return \Illuminate\Http\Response
@@ -86,7 +88,7 @@ class UserController extends Controller
     public function refresh()
     {
         return response()->json([
-            'token' => auth()->refresh()
+            'token' => auth()->refresh(),
         ], 200);
     }
 }

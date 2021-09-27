@@ -13,28 +13,28 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 Route::post('/register', [
-    UserController::class, 'register'
+    UserController::class, 'register',
 ]);
 
 Route::post('/login', [
-    UserController::class, 'login'
+    UserController::class, 'login',
 ]);
 
 Route::post('/refresh', [
-    UserController::class, 'refresh'
+    UserController::class, 'refresh',
 ]);
 
 Route::middleware(['auth.jwt'])->group(function () {
 
     Route::get('/user', [
-        UserController::class, 'getUser'
+        UserController::class, 'getUser',
     ]);
-    
+
     Route::post('/logout', [
-        UserController::class, 'logout'
+        UserController::class, 'logout',
     ]);
 
     // Route::post('/assets', [AssetController::class, 'store']);
@@ -45,8 +45,7 @@ Route::middleware(['auth.jwt'])->group(function () {
 
 });
 
-
-//testavimui del paprastumo visada bus prisijungta kaip naudotjas id = 1 (reikia seedint db kad atsirastu) 
+//testavimui del paprastumo visada bus prisijungta kaip naudotjas id = 1 (reikia seedint db kad atsirastu)
 //jei reikalinga kad butu galima prisijungti patiems, sita koda istrinti ir atkomentuoti routus esancius virsuje
 Route::middleware(['dummyUser'])->group(function () {
 
@@ -58,6 +57,3 @@ Route::middleware(['dummyUser'])->group(function () {
 });
 
 Route::get('/cryptos', [AssetController::class, 'availableCryptos']);
-
-    
-

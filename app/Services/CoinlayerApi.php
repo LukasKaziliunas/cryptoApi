@@ -2,19 +2,19 @@
 
 namespace App\Services;
 
-use \App\Interfaces\CryptoApi;
 use Illuminate\Support\Facades\Http;
+use \App\Interfaces\CryptoApi;
 
 class CoinlayerApi implements CryptoApi
 {
-     /**
+    /**
      * secret key of the external api.
      *
      * @var string
      */
-    private $key; 
+    private $key;
 
-     /**
+    /**
      * daily request limit for external api.
      *
      * @var int
@@ -23,11 +23,11 @@ class CoinlayerApi implements CryptoApi
 
     public function __construct()
     {
-         $this->key = config("crypto.coinlayer.key");
-         $this->limit = config("crypto.coinlayer.limit");
+        $this->key = config("crypto.coinlayer.key");
+        $this->limit = config("crypto.coinlayer.limit");
     }
 
-     /**
+    /**
      * Return an array of cryptos and their prices.
      *
      * @return array
@@ -48,9 +48,10 @@ class CoinlayerApi implements CryptoApi
         $cryptosListString = implode(",", self::CRYPTOS); // "BTC,ETH"
         $minutesInDay = 1440;
         $cacheDuration = floor($minutesInDay / $this->limit);
+        $cacheTime = now()->addMinutes($cacheDuration);
 
-        $response = cache()->remember('coinlayer', now()->addMinutes($cacheDuration), function() use($cryptosListString){
-            return $this->sendRequest( $this->key, $cryptosListString );
+        $response = cache()->remember('coinlayer', $cacheTime, function () use ($cryptosListString) {
+            return $this->sendRequest($this->key, $cryptosListString);
         });
         return $response;
     }
@@ -73,11 +74,10 @@ class CoinlayerApi implements CryptoApi
     private function sendRequest($key, $cryptosListString)
     {
         $response = Http::acceptJson()
-                ->get("http://api.coinlayer.com/api/live?access_key={$key}&symbols={$cryptosListString}");
+            ->get("http://api.coinlayer.com/api/live?access_key={$key}&symbols={$cryptosListString}");
 
         $response->throw(); //jei atsirastu klaida išmes exception
 
-        return json_decode( $response, true ); //konvertuoja json string i rakto-reiksmes masyva
+        return json_decode($response, true); //konvertuoja json string i rakto-reiksmes masyva
     }
-
 }
