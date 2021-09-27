@@ -7,7 +7,18 @@ use Illuminate\Support\Facades\Http;
 
 class CoinlayerApi implements CryptoApi
 {
+     /**
+     * secret key of the external api.
+     *
+     * @var string
+     */
     private $key; 
+
+     /**
+     * daily request limit for external api.
+     *
+     * @var int
+     */
     private $limit;
 
     public function __construct()
@@ -16,12 +27,22 @@ class CoinlayerApi implements CryptoApi
          $this->limit = config("crypto.coinlayer.limit");
     }
 
+     /**
+     * Return an array of cryptos and their prices.
+     *
+     * @return array
+     */
     public function getRates()
     {
         $response = $this->makeApiCall();
         return $this->parseResponseToPricesArray($response);
     }
 
+    /**
+     * Makes a call to external crypto api if response is not cached and returns a raw response.
+     *
+     * @return array
+     */
     public function makeApiCall()
     {
         $cryptosListString = implode(",", self::CRYPTOS); // "BTC,ETH"
@@ -34,11 +55,21 @@ class CoinlayerApi implements CryptoApi
         return $response;
     }
 
+    /**
+     * Return an array of cryptos and their prices.
+     *
+     * @return array
+     */
     public function parseResponseToPricesArray($jsonResponse)
     {
         return $jsonResponse['rates'];
     }
 
+    /**
+     * Sends an HTTP request to external api.
+     *
+     * @return array
+     */
     private function sendRequest($key, $cryptosListString)
     {
         $response = Http::acceptJson()

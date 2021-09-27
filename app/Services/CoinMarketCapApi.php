@@ -8,7 +8,18 @@ use Illuminate\Support\Facades\Http;
 class CoinMarketCapApi implements CryptoApi
 {
 
+    /**
+     * secret key of the external api.
+     *
+     * @var string
+     */
     private $key; 
+
+     /**
+     * daily request limit for external api.
+     *
+     * @var int
+     */
     private $limit;
 
     public function __construct()
@@ -17,12 +28,22 @@ class CoinMarketCapApi implements CryptoApi
          $this->limit = config("crypto.coinmarketcap.limit");
     }
 
+     /**
+     * Return an array of cryptos and their prices.
+     *
+     * @return array
+     */
     public function getRates()
     {
         $response = $this->makeApiCall();
         return $this->parseResponseToPricesArray($response);
     }
 
+     /**
+     * Makes a call to external crypto api if response is not cached and returns a raw response.
+     *
+     * @return stdObject
+     */
     public function makeApiCall()
     {
         $cryptosListString = implode(",", self::CRYPTOS); // "BTC,ETH"  ...
@@ -36,6 +57,11 @@ class CoinMarketCapApi implements CryptoApi
         return $response;
     }
 
+     /**
+     * Return an array of cryptos and their prices.
+     *
+     * @return array
+     */
     public function parseResponseToPricesArray($jsonResponse)
     {
         $cryptosPrices = [];
@@ -50,6 +76,11 @@ class CoinMarketCapApi implements CryptoApi
         return $cryptosPrices;
     }
 
+     /**
+     * Sends an HTTP request to external api.
+     *
+     * @return stdObject
+     */
     private function sendRequest($key, $cryptosListString)
     {
         $response = Http::acceptJson()->withHeaders([

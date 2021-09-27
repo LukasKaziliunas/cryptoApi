@@ -8,6 +8,12 @@ use App\Models\Asset;
 class AssetsService
 {
 
+      /**
+     * get total value of users portfolio.
+     *
+     * @param  int $userId
+     * @return double
+     */
     public static function getPortfolioTotal($userId)
     {
         $rates = app()->make(CryptoApi::class)->getRates();
@@ -15,6 +21,12 @@ class AssetsService
         return self::calculateAssetsTotal($rates, $cryptoAmounts);
     }
 
+    /**
+     * get total value of users portfolio.
+     *
+     * @param  int $userId
+     * @return double
+     */
     public static function calculateAssetsTotal($rates, $cryptoAmounts)
     {
         $total = 0;
@@ -28,6 +40,13 @@ class AssetsService
         return $total;
     }
 
+     /**
+     * Returns the price for the crypto amount.
+     *
+     * @param  string $crypto
+     * @param  double $amount
+     * @return double
+     */
     public static function calculateAssetPrice($crypto, $amount)
     {
         $cryptoApi = app()->make(CryptoApi::class);

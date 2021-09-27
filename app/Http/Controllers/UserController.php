@@ -10,6 +10,12 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
+     /**
+     * create a user account.
+     *
+     * @param  RegisterRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function register(RegisterRequest $request)
     {
         $user = new User([
@@ -26,6 +32,12 @@ class UserController extends Controller
         ],201);
     }
 
+     /**
+     * log the user in and give auth token.
+     *
+     * @param  LoginRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -45,17 +57,32 @@ class UserController extends Controller
         ], 200);
     }
 
+     /**
+     * get user's profile.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getUser(){
         $user = auth('api')->user();
         return response()->json(['user'=>$user], 200);
     }
 
+     /**
+     * invalidate user's token.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function logout(){
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
 
+     /**
+     * gives a new token and makes the old one invalid.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function refresh()
     {
         return response()->json([

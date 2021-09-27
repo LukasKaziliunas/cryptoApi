@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Illuminate\Http\Client\ConnectionException;
 
 class Handler extends ExceptionHandler
 {
@@ -79,8 +80,12 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (RequestException $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
-            return response()->json(['message' => 'Bad request to external api'], 500);   
-    });
+            return response()->json(['message' => 'Bad request to external api'], 500);    
+        });
 
+        $this->renderable(function (ConnectionException $e, $request) {
+            Log::channel('myErrors')->error($e->getMessage());
+            return response()->json(['message' => 'Could not connect to external api'], 500);    
+        });
     }
 }
