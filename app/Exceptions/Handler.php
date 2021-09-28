@@ -52,7 +52,15 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (JWTException $e, $request) {
-            return response()->json(['message' => 'Token not parsed'], 401);
+            return response()->json(['message' => 'Jwt error'], 500);
+        });
+
+        $this->renderable(function (JwtTokenNotParsedException $e, $request) {
+            return response()->json(['message' => $e->getMessage()], 401);
+        });
+
+        $this->renderable(function (JwtInvalidCredentialsException $e, $request) {
+            return response()->json(['message' => $e->getMessage()], 401);
         });
 
         $this->renderable(function (NotFoundHttpException $e, $request) {
@@ -86,6 +94,13 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ConnectionException $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
             return response()->json(['message' => 'Could not connect to external api'], 500);
+        });
+
+        $this->renderable(function (ValidationException $e, $request) {
+            return response()->json([
+                'errors' => $e->getErrors(),
+                'fields' => $e->getFields(),
+            ]);
         });
     }
 }

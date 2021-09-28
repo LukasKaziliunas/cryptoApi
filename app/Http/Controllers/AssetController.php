@@ -65,7 +65,7 @@ class AssetController extends Controller
         return response()->json([
             'message' => 'asset was updated.',
             'id' => $asset->id,
-        ], 200);
+            ], 200);
     }
 
     /**

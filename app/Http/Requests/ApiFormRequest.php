@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 abstract class ApiFormRequest extends FormRequest
 {
@@ -23,13 +23,7 @@ abstract class ApiFormRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(
-            response()->json(["errors" => $validator->errors(),
-                "fields" => request()->all()],
-                422)
-        );
-
-        parent::failedValidation($validator);
+        throw new ValidationException($validator->errors(), request()->all());
     }
     abstract public function rules();
 }
