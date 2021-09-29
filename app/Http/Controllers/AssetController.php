@@ -9,6 +9,7 @@ use App\Http\Resources\AssetCollection;
 use App\Http\Resources\AssetResource;
 use App\Interfaces\CryptoApi;
 use App\Models\Asset;
+use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {
@@ -17,9 +18,9 @@ class AssetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new AssetCollection(Asset::where('user_id', auth()->id())->get());
+        return new AssetCollection(Asset::where('user_id', $request->user()->id)->get());
     }
 
     /**
@@ -42,7 +43,7 @@ class AssetController extends Controller
     public function store(AssetRequest $request)
     {
         $validated = $request->validated();
-        $validated['user_id'] = auth()->id();
+        $validated['user_id'] = $request->user()->id;
 
         $asset = Asset::create($validated);
 
@@ -65,7 +66,7 @@ class AssetController extends Controller
         return response()->json([
             'message' => 'asset was updated.',
             'id' => $asset->id,
-            ], 200);
+        ], 200);
     }
 
     /**

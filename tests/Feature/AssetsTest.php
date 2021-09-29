@@ -27,7 +27,7 @@ class AssetsTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJson([
-                'message' => 'asset created.',
+                'message' => 'asset was created.',
             ]);
     }
 

@@ -11,8 +11,8 @@ class AssetDeleteRequest extends ApiFormRequest
      */
     public function authorize()
     {
-        $asset = request()->route('asset');
-        $userId = auth()->user()->id;
+        $asset = $this->route('asset');
+        $userId = $this->user()->id;
         if ($asset->user_id == $userId) {
             return true;
         }

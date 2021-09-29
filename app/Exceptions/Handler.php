@@ -100,7 +100,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'errors' => $e->getErrors(),
                 'fields' => $e->getFields(),
-            ]);
+            ], 422);
         });
     }
 }

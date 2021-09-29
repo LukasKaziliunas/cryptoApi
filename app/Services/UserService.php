@@ -3,13 +3,19 @@
 namespace App\Services;
 
 use App\Exceptions\JwtInvalidCredentialsException;
-use App\Interfaces\CryptoApi;
-use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
+
+    protected $auth;
+
+    public function __construct(Auth $auth)
+    {
+        $this->auth = $auth;
+    }
+
      /**
      * create user's account.
      *
@@ -37,7 +43,7 @@ class UserService
      */
     public function loginUser($credentials)
     {
-        if (!$token = Auth::attempt($credentials)) {
+        if (!$token = $this->auth::attempt($credentials)) {
             throw new JwtInvalidCredentialsException();
         }
 
@@ -49,7 +55,7 @@ class UserService
      */
     public function logoutUser()
     {
-        Auth::logout();
+        $this->auth::logout();
     }
 
     /**
@@ -58,6 +64,6 @@ class UserService
      */
     public function refreshUserToken()
     {
-       return Auth::refresh();
+       return $this->auth::refresh();
     }
 }

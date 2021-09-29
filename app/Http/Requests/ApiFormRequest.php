@@ -23,7 +23,7 @@ abstract class ApiFormRequest extends FormRequest
      */
     protected function failedValidation(Validator $validator)
     {
-        throw new ValidationException($validator->errors(), request()->all());
+        throw new ValidationException($validator->errors(), $this->all());
     }
     abstract public function rules();
 }
