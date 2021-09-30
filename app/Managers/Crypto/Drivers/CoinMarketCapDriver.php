@@ -2,7 +2,7 @@
 
 namespace App\Managers\Crypto\Drivers;
 
-use App\Managers\Crypto\contracts\Driver;
+use App\Managers\Crypto\Contracts\Driver;
 use GuzzleHttp;
 
 class CoinMarketCapDriver implements Driver
@@ -36,7 +36,7 @@ class CoinMarketCapDriver implements Driver
     private function makeApiCall()
     {
         $cryptosListString = implode(",", $this->cryptos); // "BTC,ETH"  ...
-        
+
         $cacheTime = $this->calculateCacheTime();
 
         $urlQuery = '?symbol=' . $cryptosListString . '&convert=usd';
@@ -73,7 +73,7 @@ class CoinMarketCapDriver implements Driver
     private function sendRequest($key, $url)
     {
         $response = $this->getClient()->request('GET', $url, ['headers' => ['X-CMC_PRO_API_KEY' => $key]]);
-        
+
         return json_decode($response->getBody()->getContents()); // konvertuoja json response i stdClass objekta
     }
 

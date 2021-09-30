@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Interfaces\CryptoApi;
+use App\Managers\Crypto\RateExchangeManager;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-       //
+        $this->app->singleton(RateExchangeManager::class, function ($app) {
+            return new RateExchangeManager();
+        });
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Managers\Crypto\contracts;
+namespace App\Managers\Crypto\Contracts;
 
 interface Driver
 {

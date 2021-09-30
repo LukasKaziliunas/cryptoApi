@@ -97,8 +97,13 @@ class AssetController extends Controller
 
     public function test(RateExchangeManager $manager)
     {
-       
-        return  $manager->getRates();
-      
+
+        $r1 = $manager->getRates();
+        sleep(5);
+        $manager2 = resolve(RateExchangeManager::class);
+        $r2 = $manager2->getRates();
+
+        return 1;
+
     }
 }

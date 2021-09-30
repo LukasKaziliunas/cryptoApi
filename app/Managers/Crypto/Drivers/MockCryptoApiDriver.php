@@ -2,7 +2,7 @@
 
 namespace App\Managers\Crypto\Drivers;
 
-use App\Managers\Crypto\contracts\Driver;
+use App\Managers\Crypto\Contracts\Driver;
 
 class MockCryptoApiDriver implements Driver
 {

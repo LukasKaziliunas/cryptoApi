@@ -3,7 +3,7 @@
 namespace App\Managers\Crypto\Drivers;
 
 use GuzzleHttp;
-use App\Managers\Crypto\contracts\Driver;
+use App\Managers\Crypto\Contracts\Driver;
 
 class CoinLayerDriver implements Driver
 {
@@ -35,7 +35,7 @@ class CoinLayerDriver implements Driver
     public function makeApiCall()
     {
         $cryptosListString = implode(",", $this->cryptos); // "BTC,ETH"
-    
+
         $cacheTime = $this->calculateCacheTime();
 
         $urlQuery = "?access_key=" . $this->config['key'] . "&symbols=" . $cryptosListString;
