@@ -1,18 +1,20 @@
 <?php
 
 return [
-    'default' => env('CRYPTO_API', 'coinmarketcap'),
+    'default' => env('CRYPTO_API', 'mockcoinmarketcap'),
+
+    'cryptos' => ["BTC", "ETH", "DOGE"],
 
     'coinmarketcap' => [
-        'class' => App\Services\CoinMarketCapApi::class,
+        'url' => 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest',
         'key' => env('COINMARKETCAP_KEY', ''),
         'limit' => env('COINMARKETCAP_DAILY_LIMIT', 0),
     ],
 
     'coinlayer' => [
-        'class' => App\Services\CoinlayerApi::class,
+        'url' =>  'http://api.coinlayer.com/api/live',
         'key' => env('COINLAYER_KEY', ''),
-        'limit' => env('COINLAYER_DAILY_LIMIT', 0),
+        'limit' => env('COINLAYER_DAILY_LIMIT', 0), 
     ],
 
 ];

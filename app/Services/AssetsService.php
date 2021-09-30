@@ -2,23 +2,17 @@
 
 namespace App\Services;
 
-use App\Interfaces\CryptoApi;
+use App\Managers\Crypto\RateExchangeManager;
 use App\Models\Asset;
 
 class AssetsService
 {
 
-    /**
-     * get total value of users portfolio.
-     *
-     * @param  int $userId
-     * @return double
-     */
-    public static function getPortfolioTotal($userId)
+    protected $rateManager;
+
+    public function __construct(RateExchangeManager $rateManager)
     {
-        $rates = app()->make(CryptoApi::class)->getRates();
-        $cryptoAmounts = Asset::getUserCryptoAmounts($userId);
-        return self::calculateAssetsTotal($rates, $cryptoAmounts);
+        $this->rateManager = $rateManager;
     }
 
     /**
@@ -27,7 +21,20 @@ class AssetsService
      * @param  int $userId
      * @return double
      */
-    public static function calculateAssetsTotal($rates, $cryptoAmounts)
+    public function getPortfolioTotal($userId)
+    {
+        $rates = $this->rateManager->getRates();
+        $cryptoAmounts = Asset::getUserCryptoAmounts($userId);
+        return $this->calculateAssetsTotal($rates, $cryptoAmounts);
+    }
+
+    /**
+     * get total value of users portfolio.
+     *
+     * @param  int $userId
+     * @return double
+     */
+    public function calculateAssetsTotal($rates, $cryptoAmounts)
     {
         $total = 0;
 
@@ -46,10 +53,9 @@ class AssetsService
      * @param  double $amount
      * @return double
      */
-    public static function calculateAssetPrice($crypto, $amount)
+    public function calculateAssetPrice($crypto, $amount)
     {
-        $cryptoApi = app()->make(CryptoApi::class);
-        $rates = $cryptoApi->getRates();
+        $rates = $this->rateManager->getRates();
 
         return $rates[$crypto] * $amount;
     }

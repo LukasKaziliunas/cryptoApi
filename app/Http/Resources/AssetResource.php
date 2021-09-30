@@ -16,7 +16,9 @@ class AssetResource extends JsonResource
      */
     public function toArray($request)
     {
-        $price = AssetsService::calculateAssetPrice($this->crypto, $this->amount);
+        $assetsService = resolve(AssetsService::class);
+
+        $price = $assetsService->calculateAssetPrice($this->crypto, $this->amount);
 
         return [
             'id' => $this->id,

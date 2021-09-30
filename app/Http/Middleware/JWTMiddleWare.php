@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use App\Exceptions\JwtTokenNotParsedException;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTAuth;
 
 class JWTMiddleWare
 {
@@ -20,7 +20,7 @@ class JWTMiddleWare
     public function handle(Request $request, Closure $next)
     {
         try {
-            Auth::parseToken()->authenticate();
+            JWTAuth::parseToken()->authenticate();
             return $next($request);
         } catch (JWTException $e) {
             throw new JwtTokenNotParsedException();

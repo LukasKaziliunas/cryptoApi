@@ -7,9 +7,10 @@ use App\Http\Requests\AssetRequest;
 use App\Http\Requests\AssetUpdateRequest;
 use App\Http\Resources\AssetCollection;
 use App\Http\Resources\AssetResource;
-use App\Interfaces\CryptoApi;
+use App\Managers\Crypto\RateExchangeManager;
 use App\Models\Asset;
 use Illuminate\Http\Request;
+use Config;
 
 class AssetController extends Controller
 {
@@ -91,6 +92,13 @@ class AssetController extends Controller
      */
     public function availableCryptos()
     {
-        return CryptoApi::CRYPTOS;
+        return Config::get('crypto.cryptos');
+    }
+
+    public function test(RateExchangeManager $manager)
+    {
+       
+        return  $manager->getRates();
+      
     }
 }

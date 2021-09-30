@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Interfaces\CryptoApi;
+use Config;
 use Illuminate\Validation\Rule;
 
 class AssetRequest extends ApiFormRequest
@@ -26,7 +26,7 @@ class AssetRequest extends ApiFormRequest
     {
         return [
             'label' => 'required|max:255',
-            'crypto' => ['required', Rule::in(CryptoApi::CRYPTOS)],
+            'crypto' => ['required', Rule::in(Config::get('crypto.cryptos'))],
             'amount' => 'required|numeric|min:0',
         ];
     }

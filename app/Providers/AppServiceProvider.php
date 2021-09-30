@@ -14,10 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $default = config('crypto.default');
-        $cryptoApi = config("crypto.{$default}.class");
-
-        $this->app->bind(CryptoApi::class, $cryptoApi);
+       //
     }
 
     /**

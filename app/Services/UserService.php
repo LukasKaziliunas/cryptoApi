@@ -16,7 +16,7 @@ class UserService
         $this->auth = $auth;
     }
 
-     /**
+    /**
      * create user's account.
      *
      * @param array valid inputs
@@ -64,6 +64,6 @@ class UserService
      */
     public function refreshUserToken()
     {
-       return $this->auth::refresh();
+        return $this->auth::refresh();
     }
 }

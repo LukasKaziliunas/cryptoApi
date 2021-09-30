@@ -3,9 +3,10 @@
 namespace App\Exceptions;
 
 use ErrorException;
+use Exception;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\RequestException;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use TypeError;
 
 class Handler extends ExceptionHandler
 {
@@ -86,12 +88,12 @@ class Handler extends ExceptionHandler
             return response()->json(['message' => 'Internal error'], 500);
         });
 
-        $this->renderable(function (RequestException $e, $request) {
+        $this->renderable(function (ClientException $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
             return response()->json(['message' => 'Bad request to external api'], 500);
         });
 
-        $this->renderable(function (ConnectionException $e, $request) {
+        $this->renderable(function (ConnectException $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
             return response()->json(['message' => 'Could not connect to external api'], 500);
         });
@@ -101,6 +103,16 @@ class Handler extends ExceptionHandler
                 'errors' => $e->getErrors(),
                 'fields' => $e->getFields(),
             ], 422);
+        });
+
+        $this->renderable(function (Exception $e, $request) {
+            Log::channel('myErrors')->error($e->getMessage());
+            return response()->json(['message' => 'Internal error'], 500);
+        });
+
+        $this->renderable(function (TypeError $e, $request) {
+            Log::channel('myErrors')->error($e->getMessage());
+            return response()->json(['message' => 'Internal error'], 500);
         });
     }
 }
