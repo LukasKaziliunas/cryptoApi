@@ -1,10 +1,39 @@
 # Api documentation
 
+* [Quickstart](#Quickstart)
 * [User](#User)
 * [Authentication](#Authentication)
 * [Assets](#Assets)
 * [Cryptos](#Cryptos)
 * [Errors](#Errors)
+
+## Quickstart
+
+1) download the repository https://github.com/LukasKaziliunas/cryptoApi
+
+2) run the command 
+
+`composer install`
+
+3) copy the file .env.example and rename it to .env 
+
+4) set DB credentials, crypto api keys and daily limits in .env file.
+
+5) generate APP_KEY
+
+`php artisan key:generate`
+
+6) generate jwt secret key
+
+`php artisan jwt:secret`
+
+7) create the database and run the command 
+
+`php artisan migrate --seed`
+
+8) start the server 
+
+`php artisan serve`
 
 ## Important
 
