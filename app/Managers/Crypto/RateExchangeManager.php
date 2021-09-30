@@ -8,13 +8,6 @@ use Illuminate\Support\Manager;
 
 class RateExchangeManager extends Manager
 {
-    public $now;
-
-    public function __construct()
-    {
-        $this->now = now()->format('h:i:s');
-    }
-
     public function createCoinmarketcapDriver()
     {
         $config = Config::get('crypto.coinmarketcap');
@@ -38,7 +31,6 @@ class RateExchangeManager extends Manager
 
     public function getDefaultDriver()
     {
-        error_log($this->now);
         return Config::get('crypto.default');
     }
 }

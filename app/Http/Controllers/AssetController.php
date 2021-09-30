@@ -94,16 +94,4 @@ class AssetController extends Controller
     {
         return Config::get('crypto.cryptos');
     }
-
-    public function test(RateExchangeManager $manager)
-    {
-
-        $r1 = $manager->getRates();
-        sleep(5);
-        $manager2 = resolve(RateExchangeManager::class);
-        $r2 = $manager2->getRates();
-
-        return 1;
-
-    }
 }

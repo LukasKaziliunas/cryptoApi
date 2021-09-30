@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(RateExchangeManager::class, function ($app) {
-            return new RateExchangeManager();
+            return new RateExchangeManager($app);
         });
     }
 

@@ -17,7 +17,7 @@ class CreateAssetsTable extends Migration
             $table->id();
             $table->string('label');
             $table->string('crypto');
-            $table->double('amount');
+            $table->unsignedDecimal('amount');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

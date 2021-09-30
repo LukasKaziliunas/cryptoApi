@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default' => env('CRYPTO_API', 'mockcoinmarketcap'),
+    'default' => env('CRYPTO_API', 'mockcryptoapi'),
 
     'cryptos' => ["BTC", "ETH", "DOGE"],
 
@@ -14,7 +14,7 @@ return [
     'coinlayer' => [
         'url' =>  'http://api.coinlayer.com/api/live',
         'key' => env('COINLAYER_KEY', ''),
-        'limit' => env('COINLAYER_DAILY_LIMIT', 0), 
+        'limit' => env('COINLAYER_DAILY_LIMIT', 0),
     ],
 
 ];

@@ -47,5 +47,3 @@ Route::middleware(['dummyUser'])->group(function () {
 });
 
 Route::get('/cryptos', [AssetController::class, 'availableCryptos']);
-
-Route::get('/test', [AssetController::class, 'test']);
