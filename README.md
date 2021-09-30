@@ -17,7 +17,7 @@
 
 3) copy the file .env.example and rename it to .env 
 
-4) set DB credentials, crypto api keys and daily limits in .env file.
+4) set DB credentials, external crypto api keys and daily limits in .env file. By default mock crypto api is used
 
 5) generate APP_KEY
 
