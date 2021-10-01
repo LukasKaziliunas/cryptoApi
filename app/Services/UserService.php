@@ -11,6 +11,12 @@ class UserService
 
     protected $auth;
 
+    /**
+     * Creates new UserService class.
+     *
+     * @param Auth $auth
+     * @return void
+     */
     public function __construct(Auth $auth)
     {
         $this->auth = $auth;

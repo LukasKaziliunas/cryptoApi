@@ -10,6 +10,12 @@ class AssetsService
 
     protected $rateManager;
 
+    /**
+     * Creates new AssetsService class.
+     * 
+     * @param RateExchangeManager $rateManager
+     * @return void
+     */
     public function __construct(RateExchangeManager $rateManager)
     {
         $this->rateManager = $rateManager;

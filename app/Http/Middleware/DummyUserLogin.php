@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,12 +18,14 @@ class DummyUserLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check())
+        if (Auth::check()) {
             return $next($request);
+        }
 
-        if(Auth::attempt([ 'email' => 'bob@example.com', 'password' => 'password' ]))
+        if (Auth::attempt(['email' => 'bob@example.com', 'password' => 'password'])) {
             return $next($request);
+        }
 
-        return response()->json(['message' => 'User does not exist.'], 401); 
+        throw new AuthenticationException();
     }
 }

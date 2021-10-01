@@ -5,8 +5,9 @@ namespace App\Exceptions;
 use ErrorException;
 use Exception;
 use GuzzleHttp\Exception\ClientException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use GuzzleHttp\Exception\ConnectException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -63,6 +64,10 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (JwtInvalidCredentialsException $e, $request) {
             return response()->json(['message' => $e->getMessage()], 401);
+        });
+
+        $this->renderable(function (AuthenticationException $e, $request) {
+            return response()->json(['message' => 'User does not exist aaaa.'], 401);
         });
 
         $this->renderable(function (NotFoundHttpException $e, $request) {

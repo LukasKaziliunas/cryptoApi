@@ -11,6 +11,13 @@ class CoinMarketCapDriver implements Driver
     protected $config;
     protected $cryptos;
 
+    /**
+     * Create a new driver.
+     *
+     * @param array $config
+     * @param array $cryptos
+     * @return void
+     */
     public function __construct(array $config, array $cryptos)
     {
         $this->config = $config;
@@ -77,6 +84,11 @@ class CoinMarketCapDriver implements Driver
         return json_decode($response->getBody()->getContents()); // konvertuoja json response i stdClass objekta
     }
 
+    /**
+     * Returns guzzle client with base url set up.
+     *
+     * @return GuzzleHttp\Client
+     */
     private function getClient()
     {
         return new GuzzleHttp\Client([
@@ -84,6 +96,11 @@ class CoinMarketCapDriver implements Driver
         ]);
     }
 
+    /**
+     * Calculates until what time from now the response should be cached.
+     *
+     * @return Illuminate\Support\Carbon
+     */
     private function calculateCacheTime()
     {
         $minutesInDay = 1440;

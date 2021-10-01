@@ -7,10 +7,9 @@ use App\Http\Requests\AssetRequest;
 use App\Http\Requests\AssetUpdateRequest;
 use App\Http\Resources\AssetCollection;
 use App\Http\Resources\AssetResource;
-use App\Managers\Crypto\RateExchangeManager;
 use App\Models\Asset;
-use Illuminate\Http\Request;
 use Config;
+use Illuminate\Http\Request;
 
 class AssetController extends Controller
 {

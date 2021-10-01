@@ -2,14 +2,21 @@
 
 namespace App\Managers\Crypto\Drivers;
 
-use GuzzleHttp;
 use App\Managers\Crypto\Contracts\Driver;
+use GuzzleHttp;
 
 class CoinLayerDriver implements Driver
 {
     protected $config;
     protected $cryptos;
 
+    /**
+     * Create a new driver.
+     *
+     * @param array $config
+     * @param array $cryptos
+     * @return void
+     */
     public function __construct(array $config, array $cryptos)
     {
         $this->config = $config;
@@ -68,6 +75,11 @@ class CoinLayerDriver implements Driver
         return json_decode($response->getBody()->getContents(), true); //konvertuoja json string i rakto-reiksmes masyva
     }
 
+    /**
+     * Calculates until what time from now the response should be cached.
+     *
+     * @return Illuminate\Support\Carbon
+     */
     protected function calculateCacheTime()
     {
         $minutesInDay = 1440;
@@ -76,6 +88,11 @@ class CoinLayerDriver implements Driver
         return $cacheTime;
     }
 
+    /**
+     * Returns guzzle client with base url set up.
+     *
+     * @return GuzzleHttp\Client
+     */
     protected function getClient()
     {
         return new GuzzleHttp\Client([
