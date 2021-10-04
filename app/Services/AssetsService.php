@@ -12,7 +12,7 @@ class AssetsService
 
     /**
      * Creates new AssetsService class.
-     * 
+     *
      * @param RateExchangeManager $rateManager
      * @return void
      */

@@ -66,6 +66,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
+    /**
+     * Gets user assets.
+     *
+     * @return Collection
+     */
     public function assets()
     {
         return $this->hasMany(Asset::class);

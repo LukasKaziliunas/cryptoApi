@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Interfaces\CryptoApi;
 use App\Managers\Crypto\RateExchangeManager;
 use Illuminate\Support\ServiceProvider;
 

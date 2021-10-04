@@ -21,7 +21,7 @@ class AssetsTest extends TestCase
         parent::setUp();
         $this->user = User::factory()->create();
         $this->token = JWTAuth::fromUser($this->user);
-        
+
     }
 
     public function testUserCreatesAsset()

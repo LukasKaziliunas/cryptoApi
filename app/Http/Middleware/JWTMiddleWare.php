@@ -17,7 +17,7 @@ class JWTMiddleWare
      */
     public function handle(Request $request, Closure $next)
     {
-            JWTAuth::parseToken()->authenticate();
-            return $next($request);
+        JWTAuth::parseToken()->authenticate();
+        return $next($request);
     }
 }

@@ -106,10 +106,10 @@ class Handler extends ExceptionHandler
             ], 422);
         });
 
-        // $this->renderable(function (Exception $e, $request) {
-        //     Log::channel('myErrors')->error($e->getMessage());
-        //     return response()->json(['message' => 'Internal error'], 500);
-        // });
+        $this->renderable(function (Exception $e, $request) {
+            Log::channel('myErrors')->error($e->getMessage());
+            return response()->json(['message' => 'Internal error'], 500);
+        });
 
         $this->renderable(function (TypeError $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());
