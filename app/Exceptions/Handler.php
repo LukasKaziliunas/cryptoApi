@@ -47,19 +47,15 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (TokenInvalidException $e, $request) {
-            return response()->json(['message' => 'Invalid token'], 401);
+            return response()->json(['message' => 'Invalid token'], 403);
         });
 
         $this->renderable(function (TokenExpiredException $e, $request) {
-            return response()->json(['message' => 'Token has Expired'], 401);
+            return response()->json(['message' => 'Token has Expired'], 403);
         });
 
         $this->renderable(function (JWTException $e, $request) {
-            return response()->json(['message' => 'Jwt error'], 500);
-        });
-
-        $this->renderable(function (JwtTokenNotParsedException $e, $request) {
-            return response()->json(['message' => $e->getMessage()], 401);
+            return response()->json(['message' => 'Token not parsed'], 401);
         });
 
         $this->renderable(function (JwtInvalidCredentialsException $e, $request) {
@@ -67,7 +63,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (AuthenticationException $e, $request) {
-            return response()->json(['message' => 'User does not exist aaaa.'], 401);
+            return response()->json(['message' => 'User does not exist.'], 401);
         });
 
         $this->renderable(function (NotFoundHttpException $e, $request) {
@@ -110,10 +106,10 @@ class Handler extends ExceptionHandler
             ], 422);
         });
 
-        $this->renderable(function (Exception $e, $request) {
-            Log::channel('myErrors')->error($e->getMessage());
-            return response()->json(['message' => 'Internal error'], 500);
-        });
+        // $this->renderable(function (Exception $e, $request) {
+        //     Log::channel('myErrors')->error($e->getMessage());
+        //     return response()->json(['message' => 'Internal error'], 500);
+        // });
 
         $this->renderable(function (TypeError $e, $request) {
             Log::channel('myErrors')->error($e->getMessage());

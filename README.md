@@ -55,7 +55,7 @@ Currently for simplicity's sake and testing logging in is not required, a defaul
 create a user account 
 * Url
 
-`POST` localhost/api/register
+`POST` localhost/api/users/register
 * Body Parameters
 
 | Parameter | Type      | Description |
@@ -103,7 +103,7 @@ create a user account
 recieve an authorization token
 * Url
 
-`POST` localhost/api/login
+`POST` localhost/api/users/login
 * Body Parameters
 
 | Parameter | Type      | Description |
@@ -153,7 +153,7 @@ recieve an authorization token
 get logged in user profile data
 * Url
 
-`GET` localhost/api/user
+`GET` localhost/api/users/profile
 * headers
 
 `Authorization: Bearer <token>`
@@ -186,7 +186,7 @@ get logged in user profile data
 makes auth token invalid
 * Url
 
-`GET` localhost/api/logout
+`GET` localhost/api/users/logout
 * headers
 
 `Authorization: Bearer <token>`
@@ -215,7 +215,7 @@ makes auth token invalid
 recieve a new token.
 * Url
 
-`GET` localhost/api/refresh
+`GET` localhost/api/users/refresh
 * headers
 
 `Authorization: Bearer <token>`
@@ -231,7 +231,7 @@ recieve a new token.
   ```
  * **Error Response:**
 
-    * **Code:** 401 UNAUTHORIZED <br />
+    * **Code:** 403 FORBIDEN <br />
         **Content:** 
     ```
     {
@@ -538,7 +538,7 @@ show a particular asset.
 
 ## Errors
 
-* **Code:** 401 UNAUTHORIZED <br />
+* **Code:** 403 FORBIDEN <br />
 Returned when submitted token is not correct or user has logged out <br />
         **Content:** 
     ```
@@ -547,7 +547,7 @@ Returned when submitted token is not correct or user has logged out <br />
     }
     ```
 
-* **Code:** 401 UNAUTHORIZED <br />
+* **Code:** 403 FORBIDEN <br />
 Returned when submitted token is expired and needs to be refreshed <br />
         **Content:** 
     ```

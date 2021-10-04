@@ -1,0 +1,964 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "crypto portfolio api",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api"
+    }
+  ],
+  "paths": {
+    "/assets": {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "get portfolio",
+        "description": "Get all user's assets and total value.",
+        "responses": {
+          "200": {
+            "description": "retrieved user's assets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/portfolio"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid inputs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assetError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Could not recieve a response from an external api",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/errorCantConnectToApi"
+                    },
+                    {
+                      "$ref": "#/components/schemas/errorBadRequestToApi"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "assets"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "add a new asset",
+        "description": "Adds a new asset for a user.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/assetForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created new asset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successWithId"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid inputs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assetError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/{id}": {
+      "get": {
+        "tags": [
+          "assets"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/assetId"
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Get a specific asset",
+        "description": "Get specific asset's information.",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/asset"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotFound"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Could not recieve a response from an external api",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/errorCantConnectToApi"
+                    },
+                    {
+                      "$ref": "#/components/schemas/errorBadRequestToApi"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "assets"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/assetId"
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Update asset",
+        "description": "Updates assets information.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/assetForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successWithId"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotFound"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid inputs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assetError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "assets"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/assetId"
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "Delete asset",
+        "description": "Deletes an asset.",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/successDeleted"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cryptos": {
+      "get": {
+        "tags": [
+          "cryptos"
+        ],
+        "summary": "Get cryptos",
+        "description": "Gets an array of available crypto currencies.",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "example": [
+                  "BTC",
+                  "ETH",
+                  "DOGE"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "register",
+        "description": "Creates a user account.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/registrationForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Successfully Created user"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid inputs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registrationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "login",
+        "description": "Retrieves an auth token.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/loginForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid inputs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "logout",
+        "description": "Makes the auth token invalid.",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Successfully logged out"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/refresh": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "refresh token",
+        "description": "Gets a new auth token.",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/token"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "summary": "user profile",
+        "description": "Gets user profile data.",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "lastname": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenNotFound"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tokenInvalid"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "successWithId": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "message": "asset created|updated.",
+          "id": 1
+        }
+      },
+      "successDeleted": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "asset deleted."
+        }
+      },
+      "asset": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "description": "id of the asset"
+          },
+          "label": {
+            "type": "string",
+            "description": "label given by a user"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0,
+            "description": "amount of the crypto currency"
+          },
+          "crypto": {
+            "type": "string",
+            "description": "symbol of the crypto (BTC, ETH, DOGE)"
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0,
+            "description": "price of the crypto"
+          }
+        }
+      },
+      "portfolio": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number",
+            "format": "double"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/asset"
+            }
+          }
+        }
+      },
+      "assetForm": {
+        "type": "object",
+        "required": [
+          "label",
+          "amount",
+          "crypto"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "label given by a user"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "description": "amount of the crypto currency"
+          },
+          "crypto": {
+            "type": "string",
+            "description": "symbol of the crypto",
+            "enum": [
+              "BTC",
+              "ETH",
+              "DOGE"
+            ]
+          }
+        }
+      },
+      "token": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "registrationForm": {
+        "type": "object",
+        "required": [
+          "name",
+          "lastname",
+          "email",
+          "password",
+          "password2"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "user's name"
+          },
+          "lastname": {
+            "type": "number",
+            "description": "user's lastname"
+          },
+          "email": {
+            "type": "string",
+            "description": "users email"
+          },
+          "password": {
+            "type": "string",
+            "description": "password of the user"
+          },
+          "password2": {
+            "type": "string",
+            "description": "repeated user's password"
+          }
+        }
+      },
+      "loginForm": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "email of the user"
+          },
+          "password": {
+            "type": "number",
+            "description": "password of the user"
+          }
+        }
+      },
+      "tokenInvalid": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Invalid token"
+        }
+      },
+      "tokenNotFound": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Token not parsed"
+        }
+      },
+      "assetError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "nameOfTheField": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "fields": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "amount": {
+                "type": "number",
+                "format": "double"
+              },
+              "crypto": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "registrationError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "nameOfTheField": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "fields": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lastname": {
+                "type": "number",
+                "format": "double"
+              },
+              "email": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "password2": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "loginError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "error": "Invalid Credentials"
+        }
+      },
+      "errorNotFound": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Object not found"
+        }
+      },
+      "errorCantConnectToApi": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Could not connect to external api"
+        }
+      },
+      "errorBadRequestToApi": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "message": "Bad request to external api"
+        }
+      }
+    },
+    "parameters": {
+      "assetId": {
+        "name": "id",
+        "in": "path",
+        "description": "id of the asset",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

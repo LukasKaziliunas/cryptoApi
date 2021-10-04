@@ -15,25 +15,28 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::post('/register', [
-    UserController::class, 'register',
-]);
+Route::prefix('users')->group(function () {
 
-Route::post('/login', [
-    UserController::class, 'login',
-]);
+    Route::post('/register', [
+        UserController::class, 'register',
+    ]);
 
-Route::post('/refresh', [
-    UserController::class, 'refresh',
-]);
+    Route::post('/login', [
+        UserController::class, 'login',
+    ]);
+
+    Route::post('/refresh', [
+        UserController::class, 'refresh',
+    ]);
+});
 
 Route::middleware(['auth.jwt'])->group(function () {
 
-    Route::get('/user', [
+    Route::get('/users/profile', [
         UserController::class, 'getUser',
     ]);
 
-    Route::post('/logout', [
+    Route::post('/users/logout', [
         UserController::class, 'logout',
     ]);
 
