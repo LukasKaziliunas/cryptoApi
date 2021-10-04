@@ -13,31 +13,34 @@ class AssetsTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $user;
+    private $token;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->token = JWTAuth::fromUser($this->user);
+        
+    }
+
     public function testUserCreatesAsset()
     {
-        $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
-
-        $user->save();
-
-        $response = $this->actingAs($user)->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+        $response = $this->actingAs($this->user)->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
         ])->postJson('/api/assets', ['label' => 'testAsset', 'crypto' => 'BTC', 'amount' => 0.5]);
 
         $response
             ->assertStatus(201)
             ->assertJson([
-                'message' => 'asset was created.',
+                'message' => 'asset created.',
             ]);
     }
 
     public function testUserCantPostAssetWithoutFillingFields()
     {
-        $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->actingAs($user)->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+        $response = $this->actingAs($this->user)->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
         ])->postJson('/api/assets', ['label' => '', 'crypto' => '', 'amount' => '']);
 
         $response
@@ -49,13 +52,10 @@ class AssetsTest extends TestCase
 
     public function testUserGetsTheirAssets()
     {
-        $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
+        Asset::factory(3)->create(['user_id' => $this->user->id]);
 
-        Asset::factory(3)->create(['user_id' => $user->id]);
-
-        $response = $this->actingAs($user)->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+        $response = $this->actingAs($this->user)->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
         ])->getJson('/api/assets');
 
         $response
@@ -68,13 +68,10 @@ class AssetsTest extends TestCase
 
     public function testUserUpdatesAsset()
     {
-        $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
+        $a = Asset::factory()->create(['user_id' => $this->user->id, 'label' => 'test', 'crypto' => 'BTC', 'amount' => 12.3]);
 
-        $a = Asset::factory()->create(['user_id' => $user->id, 'label' => 'test', 'crypto' => 'BTC', 'amount' => 12.3]);
-
-        $this->actingAs($user)->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+        $this->actingAs($this->user)->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
         ])->put('/api/assets/' . $a->id, ['label' => 'updated', 'crypto' => 'BTC', 'amount' => 12.3]);
 
         $updated = Asset::where('id', $a->id)->first();
@@ -85,13 +82,10 @@ class AssetsTest extends TestCase
 
     public function testUserDeletesAsset()
     {
-        $user = User::factory()->create();
-        $token = JWTAuth::fromUser($user);
+        $a = Asset::factory()->create(['user_id' => $this->user->id]);
 
-        $a = Asset::factory()->create(['user_id' => $user->id]);
-
-        $this->actingAs($user)->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+        $this->actingAs($this->user)->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token,
         ])->delete('/api/assets/' . $a->id);
 
         $this->assertDatabaseCount('assets', 0);

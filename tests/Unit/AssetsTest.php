@@ -2,16 +2,24 @@
 
 namespace Tests\Unit;
 
+use App\Models\Asset;
+use App\Models\User;
 use App\Services\AssetsService;
-use ErrorException;
 use Tests\TestCase;
 
 class AssetsTest extends TestCase
 {
 
+    private $assetService;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->assetService = resolve(AssetsService::class);
+    }
+
     public function testCalculatesCorrectTotalPortfolioValue()
     {
-        $assetService = resolve(AssetsService::class);
 
         $rates = [
             'BTC' => 40000,
@@ -23,19 +31,30 @@ class AssetsTest extends TestCase
             (object) ['crypto' => "ETH", 'amount' => 2],
         ];
 
-        $total = $assetService->calculateAssetsTotal($rates, $portfolio);
+        $total = $this->assetService->calculateAssetsTotal($rates, $portfolio);
 
         $this->assertTrue($total === 62000.0);
     }
 
     public function testCalculatesCorrectCryptoPrice()
     {
-        //pries darant testa reikia kad butu nustatytas mock driveris
-        $assetService = resolve(AssetsService::class);
 
-        $price = $assetService->calculateAssetPrice('BTC', 1.5);
+        $price = $this->assetService->calculateAssetPrice('BTC', 1.5);
 
         $this->assertTrue(is_float($price));
         $this->assertTrue($price == 60000.0);
+    }
+
+    public function testCalculatesUserPortfolioTotal()
+    {
+        $u = User::factory()->create();
+
+        $a1 = Asset::factory()->create(['crypto' => "BTC", 'amount' => 0.5, 'user_id' => $u->id]);
+        $a2 = Asset::factory()->create(['crypto' => "ETH", 'amount' => 1, 'user_id' => $u->id]);
+
+        $price = $this->assetService->getPortfolioTotal($u->id);
+
+        $this->assertTrue(is_float($price));
+        $this->assertTrue($price == 23000.0);
     }
 }
